@@ -68,17 +68,16 @@ function bondJSON(data){
 
 		let text = `
 		
-				<b>Title</b>: Title<br />
-                <b>Film #</b>: Film<br />
-                <b>Year</b>: Year<br />
-                <b>Bond</b>: Bond<br />
-                <b>Box Office</b>: Box Office<br />
-                <b>Writers</b>: Writers<br />
+				<b>Title</b>: ${item.Title}<br />
+                <b>Film #</b>: ${item.Film}<br />
+                <b>Year</b>: ${item.Year}<br />
+                <b>Bond</b>: ${item.Bond}<br />
+                <b>Box Office</b>: ${item.BoxOffice}<br />
+                <b>Writers</b>: ${item.Writers}<br />
                 <div class="pic"><img src="thumbnails/a-view-to-a-kill.jpg" /></div>
 
-
-			
-		`;
+        `;
+        $("<div></div>").html(text).appendTo("#films");
 	});
 }
 
