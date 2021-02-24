@@ -66,12 +66,12 @@ function bondJSON(data){
     //$('#output').text(JSON.stringify(data));
 
     //clear films from previous click
-    $("#films").html(" ");
+    $("#films").html("");
 
     //add title to h3 element
     $("#filmtitle").html(data.title);
 
-    
+
 	$.each(data.films, function(i,item){
 
 		let text = `
