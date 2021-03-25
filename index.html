@@ -100,4 +100,111 @@ function bondJSON(data){
 		</div>
 		<div id="output">Results go here</div>
 	</body>
-</html>
+    <html>
+        <head>
+        <title>Top 10 Restaurants in Seattle</title>
+        <link rel="stylesheet" href="css/bond.css"/>
+        <style>
+        body {font-family:georgia;}
+        </style>
+        <script src="https://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+        
+        <script type="text/javascript">
+        
+        function serverSetup(server,cat){
+           server = server.toLowerCase();
+           let url = "";
+           if(server == "php"){//use web service
+               url = "api.php?cat=" + cat;
+           }else{//server is HTML only - simulate web service
+               if(cat == "box"){//box office
+                   url = "data/restaurant-name.js";
+               }else{//year
+                   url = "data/restaurant-rating.js"; 
+               }
+           }
+           return url;
+        }
+        
+        
+        $(document).ready(function() {  
+        
+            $('.category').click(function(e){
+                e.preventDefault(); //stop default action of the link
+                cat = $(this).attr("href");  //get category from URL
+                loadAJAX(cat);  //load AJAX and parse JSON file
+            });
+        });	
+        
+        
+        function loadAJAX(cat)
+        {
+           /* url can be run on a server running PHP or
+              use the a standard HTML server
+         
+              Indicate below if server is PHP or HTML
+         
+              let url = serverSetup("php",cat); //setup to run against PHP server
+              let url = serverSetup("html",cat); //setup to run against HTML server
+           */
+          
+           let url = serverSetup("html",cat);
+          
+           $.ajax({
+               type:"GET",
+               dataType: "json",
+               url:url,
+               success:bondJSON
+           });
+        }
+        
+            
+        function toConsole(data)
+        {//return data to console for JSON examination
+            console.log(data); //to view,use Chrome console, ctrl + shift + j
+        }
+        
+        function bondJSON(data){
+        //JSON processing data goes here
+            //toConsole(data);
+            //$("#output").text(JSON.stringify(data));
+        
+            //clear films from previous click
+            $("#restaurants").html("");
+        
+            //add title to h3 element
+            $("#filmtitle").html(data.title);
+        
+            $.each(data.restaurants,function(i, item){
+        
+                let text = `
+                        
+                        <b>Name:</b> ${item.Name}<br />
+                        <b>Phone:</b> ${item.Phone}<br />
+                        <b>Address:</b> ${item.Address}<br />
+                        <b>Rating:</b> ${item.Rating}<br />
+                        <b>Cuisine:</b> ${item.Cuisine}<br />
+                        <div class="pic" width="200" ><img src="images/${item.Image}"/></div>
+                        
+                `;
+                $("<div></div>").html(text).appendTo("#restaurants");
+        
+            });
+        }
+        
+        </script>
+        </head>
+            <body>
+                <div class="heading" style="text-align: center">
+            <h1>Top 10 Restaurants To Eat At When You Visit Seattle!</h1>
+                <a href="restaurants" class="category">Restaurant By Rating</a><br />
+                <a href="box" class="category">Restaurant By Name</a>
+            </div>
+                <h3 id="filmtitle"></h3>
+                <div id="restaurants">
+        
+                    </div>
+                </div>
+                <div id="output"></div>
+            </body>
+        </html>
